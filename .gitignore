@@ -34,3 +34,6 @@ gen
 /netty-kafka/.mvn/
 
 
+*.prefs
+*.classpath
+*.project
