@@ -7,13 +7,18 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.SimpleChannelInboundHandler;
 import java.net.InetAddress;
 import java.util.Date;
+import java.util.UUID;
+
+import com.sanshengshui.netty.Utils;
 
 
 @Sharable
 public class ServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    	Utils.map.put(ctx, UUID.randomUUID().toString());
         // 为新连接发送庆祝
+    	System.out.println("current connect count:"+Utils.map.size());
         ctx.write("Welcome to " + InetAddress.getLocalHost().getHostName() + "!\r\n");
         ctx.write("It is " + new Date() + " now.\r\n");
         ctx.flush();
@@ -49,5 +54,12 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();
+    }
+    
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    	Utils.map.remove(ctx);
+    	System.out.println("current connect count:"+Utils.map.size());
+    	super.channelInactive(ctx);
     }
 }

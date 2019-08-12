@@ -23,7 +23,7 @@ public final class Server {
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ServerInitializer());
-            ChannelFuture f = b.bind(8888);
+            ChannelFuture f = b.bind(8889);
             f.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
